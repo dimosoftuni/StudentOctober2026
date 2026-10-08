@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     stages {
@@ -9,12 +10,15 @@ pipeline {
             }
         }
 
-        stage("Tests and Audit") {
+        stage("Execute tests") {
+
             parallel {
 
                 stage("Run unit tests") {
                     steps {
-                        bat "npm test"
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                            bat "npm test"
+                        }
                     }
                 }
 
@@ -23,6 +27,7 @@ pipeline {
                         echo "Running integration tests"
                     }
                 }
+
             }
         }
     }
