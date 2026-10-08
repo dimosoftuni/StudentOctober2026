@@ -1,1 +1,1 @@
-Student registry app
+Student registry app test
