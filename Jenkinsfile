@@ -11,15 +11,18 @@ pipeline {
         }
 
         stage("Tests and Audit") {
-            stage("Run unit tests") {
-                steps {
-                    bat "npm test"
-                }
-            }
+            parallel {
 
-            stage("Run integration tests") {
-                steps {
-                    echo "Running integration tests"
+                stage("Run unit tests") {
+                    steps {
+                       bat "npm test"
+                    }
+                }
+
+                stage("Run integration tests") {
+                    steps {
+                        echo "Running integration tests"
+                    }
                 }
             }
         }
