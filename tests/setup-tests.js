@@ -1,6 +1,6 @@
 let server;
 
-setup(function() {
+setup(async function() {
   let students = [
     {"name" : "Steve", "email" : "steve@gmail.com"},
     {"name" : "Tina", "email" : "tina@yahoo.com"}
@@ -14,9 +14,29 @@ setup(function() {
   const studentsController = 
     require("../controllers/students-controller");
   studentsController.setup(app, students);
-  server.listen(8888);
+  await new Promise((resolve, reject) => {
+    function onError(err) {
+      server.removeListener('listening', onListening);
+      reject(err);
+    }
+    function onListening() {
+      server.removeListener('error', onError);
+      resolve();
+    }
+    server.once('error', onError);
+    server.once('listening', onListening);
+    server.listen(8888);
+  });
 });
 
 teardown(function() {
-  server.close();
+  return new Promise((resolve, reject) => {
+    server.close(err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
 });
