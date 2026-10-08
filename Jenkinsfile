@@ -10,8 +10,7 @@ pipeline {
             }
         }
 
-        stage("Execute tests") {
-
+        stage("Tests and Audit") {
             parallel {
 
                 stage("Run unit tests") {
@@ -27,7 +26,20 @@ pipeline {
                         echo "Running integration tests"
                     }
                 }
+            }
+        }
 
+        stage("Deploy to Production") {
+            steps {
+                input message: 'Do you want to deploy?', 
+                      ok: 'Deploy'
+            }
+        }
+
+        stage("Deploy") {
+            steps {
+                echo "Deploying application..."
+                bat "npm run deploy"
             }
         }
     }
