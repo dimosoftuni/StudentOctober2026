@@ -15,9 +15,7 @@ pipeline {
 
                 stage("Run unit tests") {
                     steps {
-                        catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                            bat "npm test"
-                        }
+                       bat "npm test"
                     }
                 }
 
@@ -39,7 +37,6 @@ pipeline {
         stage("Deploy") {
             steps {
                 echo "Deploying application..."
-                bat "npm run deploy"
             }
         }
     }
