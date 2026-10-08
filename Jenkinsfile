@@ -17,6 +17,9 @@ pipeline {
                     steps {
                        bat "npm test"
                     }
+                     steps {
+                        echo "Running integration tests"
+                    }
                 }
 
                 stage("Run integration tests") {
